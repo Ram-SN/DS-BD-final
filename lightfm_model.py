@@ -11,6 +11,7 @@ from pyspark.ml.recommendation import ALS
 from lightfm import LightFM
 from lightfm.evaluation import precision_at_k
 import time
+import numpy as np
 
 sc = SparkContext()
 
