@@ -70,7 +70,7 @@ model = LightFM(learning_rate=0.05, loss='warp')
 
 start = time.time()
 
-model.fit(sparse_matrix, loss='warp')
+model.fit(sparse_matrix)
 
 end = time.time()
 
