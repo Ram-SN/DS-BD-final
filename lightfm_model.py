@@ -1,4 +1,5 @@
 import pyspark
+from scipy import sparse
 from pyspark import SparkContext
 from pyspark.sql.session import SparkSession
 from pyspark.sql import SQLContext
