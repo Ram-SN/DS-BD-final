@@ -70,15 +70,16 @@ model = LightFM(learning_rate=0.5, loss='bpr')
 
 start = time.time()
 
-model.fit(sparse_matrix, epochs=1)
+model.fit_partial(sparse_matrix, epochs=1)
 
 end = time.time()
 
 # learning rate 1 = Model Fitting time is 2.86
+# learning rate 0.5 = Model Fitting time is 2.74
 
-# train_precision = precision_at_k(model, sparse_matrix, k=500, num_threads = 4).mean()
+train_precision = precision_at_k(model, sparse_matrix, k=500, num_threads = 4).mean()
 
-# test_precision = precision_at_k(model, sparse_matrix_test, k=500, num_threads = 4).mean()
+test_precision = precision_at_k(model, sparse_matrix_test, k=500, num_threads = 4).mean()
 
-# print('Precision: train %.2f, test %.2f.' % (train_precision, test_precision))
+print('Precision: train %.2f, test %.2f.' % (train_precision, test_precision))
 print('Model Fitting time is %.2f' % (end-start))
