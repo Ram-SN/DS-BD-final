@@ -42,7 +42,7 @@ n = max(max(rows), max(cols)) + 1
 sparse_matrix = sparse.coo_matrix((data, (rows, cols)), 
                     shape=(n, n))
 
-Print('sparse matrix created')
+print('sparse matrix created')
 
 model = LightFM(learning_rate=0.5, loss='bpr')
 
