@@ -70,7 +70,7 @@ model = LightFM(learning_rate=0.05, loss='bpr')
 
 start = time.time()
 
-model.fit(sparse_matrix)
+model.fit(sparse_matrix, epochs=1)
 
 end = time.time()
 
