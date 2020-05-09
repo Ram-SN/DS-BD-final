@@ -18,7 +18,7 @@ sc = SparkContext()
 
 spark = SparkSession(sc)
 
-train_set = spark.read.parquet('hdfs:/user/as12152/train.parquet')
+train_set = spark.read.parquet('hdfs:/user/as12152/subsample_1_train.parquet')
 train = train_set.select("user_id", "book_id", "rating")
 train = train.selectExpr("user_id as user", "book_id as item", "rating")
 
@@ -42,10 +42,19 @@ n = max(max(rows), max(cols)) + 1
 sparse_matrix = sparse.coo_matrix((data, (rows, cols)), 
                     shape=(n, n))
 
-test_set = spark.read.parquet('hdfs:/user/as12152/test.parquet')
+print('sparse matrix created')
+
+model = LightFM(learning_rate=0.5, loss='bpr')
+
+start = time.time()
+
+model.fit_partial(sparse_matrix, epochs=1)
+
+end = time.time()
+
+test_set = spark.read.parquet('hdfs:/user/as12152/subsample_1_test.parquet')
 test = test_set.select("user_id", "book_id", "rating")
 test = test.selectExpr("user_id as user", "book_id as item", "rating")
-
 rows_test = np.concatenate(
         test.select("user").rdd.glom().map(
           lambda x: np.array([elem[0] for elem in x]))
@@ -66,20 +75,15 @@ n = max(max(rows_test), max(cols_test)) + 1
 sparse_matrix_test = sparse.coo_matrix((data_test, (rows_test, cols_test)), 
                     shape=(n, n))
 
-model = LightFM(learning_rate=0.5, loss='bpr')
 
-start = time.time()
-
-model.fit_partial(sparse_matrix, epochs=1)
-
-end = time.time()
 # for 1% sub sample
 # learning rate 1 = Model Fitting time is 2.86
 # learning rate 0.5 = Model Fitting time is 2.74
 
-# train_precision = precision_at_k(model, sparse_matrix, k=500, num_threads = 4).mean()
-
-# test_precision = precision_at_k(model, sparse_matrix_test, k=500, num_threads = 4).mean()
-
-# print('Precision: train %.2f, test %.2f.' % (train_precision, test_precision))
 print('Model Fitting time is %.2f' % (end-start))
+
+train_precision = precision_at_k(model, sparse_matrix, k=500, num_threads = 4).mean()
+
+test_precision = precision_at_k(model, sparse_matrix_test, k=500, num_threads = 4).mean()
+
+print('Precision: train %.2f, test %.2f.' % (train_precision, test_precision))
