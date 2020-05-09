@@ -66,7 +66,7 @@ n = max(max(rows_test), max(cols_test)) + 1
 sparse_matrix_test = sparse.coo_matrix((data_test, (rows_test, cols_test)), 
                     shape=(n, n))
 
-model = LightFM(learning_rate=0.5, loss='bpr')
+model = LightFM(learning_rate=1, loss='bpr')
 
 start = time.time()
 
@@ -74,9 +74,9 @@ model.fit(sparse_matrix, epochs=1)
 
 end = time.time()
 
-train_precision = precision_at_k(model, sparse_matrix, k=500, num_threads = 4).mean()
+# train_precision = precision_at_k(model, sparse_matrix, k=500, num_threads = 4).mean()
 
-test_precision = precision_at_k(model, sparse_matrix_test, k=500, num_threads = 4).mean()
+# test_precision = precision_at_k(model, sparse_matrix_test, k=500, num_threads = 4).mean()
 
-print('Precision: train %.2f, test %.2f.' % (train_precision, test_precision))
+# print('Precision: train %.2f, test %.2f.' % (train_precision, test_precision))
 print('Model Fitting time is %.2f' % (end-start))
