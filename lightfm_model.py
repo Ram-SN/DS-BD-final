@@ -66,7 +66,7 @@ n = max(max(rows_test), max(cols_test)) + 1
 sparse_matrix_test = sparse.coo_matrix((data_test, (rows_test, cols_test)), 
                     shape=(n, n))
 
-model = LightFM(learning_rate=0.05, loss='warp')
+model = LightFM(learning_rate=0.05, loss='bpr')
 
 start = time.time()
 
