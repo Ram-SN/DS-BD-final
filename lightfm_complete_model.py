@@ -52,29 +52,29 @@ model.fit_partial(sparse_matrix, epochs=1)
 
 end = time.time()
 
-test_set = spark.read.parquet('hdfs:/user/as12152/test.parquet')
-test = test_set.select("user_id", "book_id", "rating")
-test = test.selectExpr("user_id as user", "book_id as item", "rating")
+# test_set = spark.read.parquet('hdfs:/user/as12152/test.parquet')
+# test = test_set.select("user_id", "book_id", "rating")
+# test = test.selectExpr("user_id as user", "book_id as item", "rating")
 
-rows_test = np.concatenate(
-        test.select("user").rdd.glom().map(
-          lambda x: np.array([elem[0] for elem in x]))
-        .collect())
+# rows_test = np.concatenate(
+#         test.select("user").rdd.glom().map(
+#           lambda x: np.array([elem[0] for elem in x]))
+#         .collect())
 
-cols_test = np.concatenate(
-        test.select("item").rdd.glom().map(
-          lambda x: np.array([elem[0] for elem in x]))
-        .collect())
+# cols_test = np.concatenate(
+#         test.select("item").rdd.glom().map(
+#           lambda x: np.array([elem[0] for elem in x]))
+#         .collect())
 
-data_test = np.concatenate(
-        test.select("rating").rdd.glom().map(
-          lambda x: np.array([elem[0] for elem in x]))
-        .collect())
+# data_test = np.concatenate(
+#         test.select("rating").rdd.glom().map(
+#           lambda x: np.array([elem[0] for elem in x]))
+#         .collect())
 
-n = max(max(rows_test), max(cols_test)) + 1
+# n = max(max(rows_test), max(cols_test)) + 1
 
-sparse_matrix_test = sparse.coo_matrix((data_test, (rows_test, cols_test)), 
-                    shape=(n, n))
+# sparse_matrix_test = sparse.coo_matrix((data_test, (rows_test, cols_test)), 
+#                     shape=(n, n))
 
 
 # for 1% sub sample
