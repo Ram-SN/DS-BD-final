@@ -84,6 +84,6 @@ print('Model Fitting time is %.2f' % (end-start))
 
 train_precision = precision_at_k(model, sparse_matrix, k=500, num_threads = 4).mean()
 
-test_precision = precision_at_k(model, sparse_matrix_test, k=500, num_threads = 4).mean()
+test_precision = precision_at_k(model, sparse_matrix_test, k=500, num_threads = 4, train_interactions= sparse_matrix).mean()
 
 print('Precision: train %.2f, test %.2f.' % (train_precision, test_precision))
